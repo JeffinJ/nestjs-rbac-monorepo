@@ -16,7 +16,6 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() signUpPayload: SignUpPayloadDto) {
-    this.logger.debug(`Creating user ${signUpPayload.email}`);
     return await this.authService.createUser(signUpPayload);
   }
 

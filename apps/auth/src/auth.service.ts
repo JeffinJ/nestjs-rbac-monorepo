@@ -15,6 +15,7 @@ export class AuthService {
     private readonly userRepo: UserRespository,
     private readonly jwtService: JwtService,
   ) {}
+
   getHello(): string {
     return 'Hello World!';
   }
@@ -30,11 +31,8 @@ export class AuthService {
 
   async createUser(signUpPayload: AuthPayloadDto): Promise<{ user: SignUpResponseUserData; token: string }> {
     try {
-      this.logger.debug(`Creating user ${signUpPayload.email}`);
       // Check if user already exists
       const existingUser = await this.userRepo.getUserByEmail(signUpPayload.email);
-
-      this.logger.debug(existingUser);
       if (existingUser) throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
 
       // Hash password
@@ -57,8 +55,7 @@ export class AuthService {
         token,
       };
     } catch (error) {
-      this.logger.error(error);
-      console.error(error);
+      this.logger.error('createUser', error);
       throw error;
     }
   }

@@ -6,7 +6,8 @@ import { UserRespository } from '@app/database/repositories/user.repository';
 import { DrizzleModule } from '@app/database/drizzle/drizzle.module';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategies/local.strategy';
+import { LocalStrategy } from '../../../libs/common/src/auth-strategies/local.strategy';
+import * as Joi from 'joi';
 
 const JWT_TTL = 60;
 
@@ -17,6 +18,11 @@ const JWT_TTL = 60;
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: './apps/auth/.env',
+      validationSchema: Joi.object({
+        PORT: Joi.number().default(3000),
+        DATABASE_URL: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+      }),
     }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
