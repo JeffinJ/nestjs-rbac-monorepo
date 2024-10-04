@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is a robust authentication system built with NestJS, implementing JWT (JSON Web Token) authentication using Passport.js and Role-Based Access Control (RBAC). It provides a secure and scalable foundation for building authenticated and authorized API endpoints.
 
 ## Installation
 
@@ -64,10 +64,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- Author - [Jeffin Jose](https://jeffinjose.dev)
