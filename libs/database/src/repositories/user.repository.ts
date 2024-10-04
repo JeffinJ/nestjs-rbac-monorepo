@@ -6,15 +6,10 @@ import { DRIZZLE } from '../drizzle/drizzle.module';
 
 @Injectable()
 export class UserRespository {
-  constructor(
-    @Inject(DRIZZLE) private db: PostgresJsDatabase<typeof userSchema>,
-  ) {}
+  constructor(@Inject(DRIZZLE) private db: PostgresJsDatabase<typeof userSchema>) {}
 
   async getUserByEmail(email: string) {
-    const userData = await this.db
-      .select()
-      .from(userSchema.users)
-      .where(eq(userSchema.users.email, email));
+    const userData = await this.db.select().from(userSchema.users).where(eq(userSchema.users.email, email));
     return userData[0];
   }
 
@@ -23,7 +18,10 @@ export class UserRespository {
       .insert(userSchema.users)
       .values(data)
       .onConflictDoNothing()
-      .returning()
+      .returning({
+        id: userSchema.users.id,
+        email: userSchema.users.email,
+      })
       .execute();
   }
 }

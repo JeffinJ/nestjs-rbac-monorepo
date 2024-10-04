@@ -5,6 +5,8 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '@app/database/drizzle/schema/user.schema';
 
+type SignUpResponseUserData = Pick<User, 'id' | 'email'>;
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
@@ -26,24 +28,18 @@ export class AuthService {
     return 'User is valid';
   }
 
-  async createUser(signUpPayload: AuthPayloadDto): Promise<User> {
+  async createUser(signUpPayload: AuthPayloadDto): Promise<{ user: SignUpResponseUserData; token: string }> {
     try {
       this.logger.debug(`Creating user ${signUpPayload.email}`);
       // Check if user already exists
-      const existingUser = await this.userRepo.getUserByEmail(
-        signUpPayload.email,
-      );
+      const existingUser = await this.userRepo.getUserByEmail(signUpPayload.email);
 
       this.logger.debug(existingUser);
-      if (existingUser)
-        throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      if (existingUser) throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
 
       // Hash password
       const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(
-        signUpPayload.password,
-        saltRounds,
-      );
+      const hashedPassword = await bcrypt.hash(signUpPayload.password, saltRounds);
 
       // Create user
       const newUser = await this.userRepo.create({
@@ -51,7 +47,15 @@ export class AuthService {
         passwordHash: hashedPassword,
       });
 
-      return newUser[0];
+      const token = this.jwtService.sign({
+        sub: newUser[0].id,
+        email: newUser[0].email,
+      });
+
+      return {
+        user: newUser[0],
+        token,
+      };
     } catch (error) {
       this.logger.error(error);
       console.error(error);
