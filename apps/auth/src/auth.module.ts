@@ -14,7 +14,10 @@ const JWT_TTL = 60;
   imports: [
     PassportModule,
     DrizzleModule,
-    ConfigModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: './apps/auth/.env',
+    }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: JWT_TTL },

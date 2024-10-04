@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import * as userSchema from '../drizzle/schema/user.schema';
 import { eq } from 'drizzle-orm';
@@ -10,16 +10,20 @@ export class UserRespository {
     @Inject(DRIZZLE) private db: PostgresJsDatabase<typeof userSchema>,
   ) {}
 
-  async getUserByUsername(username: string) {
+  async getUserByEmail(email: string) {
     const userData = await this.db
       .select()
       .from(userSchema.users)
-      .where(eq(userSchema.users.username, username));
-
-    if (userData.length === 0) {
-      throw new NotFoundException('Queue not found');
-    }
-
+      .where(eq(userSchema.users.email, email));
     return userData[0];
+  }
+
+  async create(data: userSchema.CreateUser) {
+    return await this.db
+      .insert(userSchema.users)
+      .values(data)
+      .onConflictDoNothing()
+      .returning()
+      .execute();
   }
 }

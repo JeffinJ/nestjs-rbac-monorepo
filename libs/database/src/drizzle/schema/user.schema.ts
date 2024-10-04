@@ -22,6 +22,17 @@ export const users = pgTable('users', {
   refreshToken: varchar('refresh_token', { length: 256 }),
   passwordResetToken: varchar('password_reset_token', { length: 256 }),
   passwordResetTokenExpiresAt: timestamp('password_reset_token_expires_at'),
-  created_at: timestamp('created_at').defaultNow(),
-  updated_at: timestamp('updated_at').defaultNow(),
+  created_at: timestamp('created_at', {
+    mode: 'date',
+    withTimezone: false,
+  }).defaultNow(),
+  updated_at: timestamp('updated_at', {
+    mode: 'date',
+    withTimezone: false,
+  })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
+
+export type CreateUser = typeof users.$inferInsert;
+export type User = typeof users.$inferSelect;
