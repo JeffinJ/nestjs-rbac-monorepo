@@ -8,7 +8,7 @@
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
 <a href="https://orm.drizzle.team/" target="_blank"><img src="https://github.com/JeffinJ/assets/blob/main/logo-github-sq-dark.svg" alt="Drizzle ORM" /></a>
-<a href="https://www.postgresql.org/" target="_blank"><img src="https://github.com/JeffinJ/assets/blob/main/PostgresSQL.svg" alt="PostgreSQL" /></a>
+<!-- <a href="https://www.postgresql.org/" target="_blank"><img src="https://github.com/JeffinJ/assets/blob/main/PostgresSQL.svg" alt="PostgreSQL" /></a> -->
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
